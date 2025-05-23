@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-cluster
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  source:
+    repoURL: https://github.com/Stxanskiy/gitops.git
+    targetRevision: main
+    path: apps/kafka/cluster        # <-- важно!
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
