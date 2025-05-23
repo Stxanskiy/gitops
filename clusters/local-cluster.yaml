@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/stxanskiy/gitops.git'
+    targetRevision: main
+    path: apps/kafka/helm
+    helm:
+      valueFiles:
+        - values.yaml
+    chart: strimzi-kafka-operator # тот же путь в Helm-репо
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
